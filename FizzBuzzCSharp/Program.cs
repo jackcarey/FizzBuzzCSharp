@@ -46,6 +46,22 @@
                     Console.WriteLine("Adding 100 to 'start' for 'end'. Error: " + e.Message);
                     end = start + 100;
                 }
+                if (args.Length >= 2)
+                {
+                    multiples.Clear();
+                    for (var i = 2; i < args.Length; ++i)
+                    {
+                        try
+                        {
+                            string[] splitArg = args[i].Split('=');
+                            multiples.Add(int.Parse(splitArg[0]), splitArg[1]);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Argument '{0}' could not be parsed, skipping. Error: {1}", args[i], e.Message);
+                        }
+                    }
+                }
             }
             for (int i = start; i <= end; ++i)
             {
