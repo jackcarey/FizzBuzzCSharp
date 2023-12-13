@@ -23,10 +23,31 @@
                 }
                 catch (FormatException e)
                 {
-                    Console.WriteLine("Using 1 for start. Error: " + e.Message);
+                    Console.WriteLine("Using 1 for 'start'. Error: " + e.Message);
+                    start = 1;
+                }
+                try
+                {
+                    if (args.Length >= 1)
+                    {
+                        int endArg = int.Parse(args[0]);
+                        if (endArg <= 0)
+                        {
+                            throw new FormatException("'start' must be greater than 0.");
+                        }
+                        if (endArg <= start)
+                        {
+                            throw new Exception("'end' must be greater than 'start'.");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Adding 100 to 'start' for 'end'. Error: " + e.Message);
+                    end = start + 100;
                 }
             }
-            for (int i = start; i < end; ++i)
+            for (int i = start; i <= end; ++i)
             {
                 string result = MultipleString(ref i, ref multiples);
                 Console.WriteLine(result);
