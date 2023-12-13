@@ -4,73 +4,40 @@
     {
         static void Main(string[] args)
         {
-            int start = 1;
-            int end = 100;
-            Dictionary<int, string> multiples = new()
+            Console.WriteLine("Running default FizzBuzz...");
+            FizzBuzz.Run();
+        }
+    }
+    public class FizzBuzz
+    {
+        public static void Run(int start = 1, int end = 100, Dictionary<int, string> multiples = null)
+        {
+            //FizzBuzz will always run in ascending order, so swap the argments if they are in the wrong positions
+            if (end < start)
             {
-                [3] = "Fizz",
-                [5] = "Buzz"
-            };
-            if (args.Length > 0)
-            {
-                try
-                {
-                    int startArg = int.Parse(args[0]);
-                    if (startArg <= 0)
-                    {
-                        throw new FormatException("'start' must be greater than 0.");
-                    }
-                }
-                catch (FormatException e)
-                {
-                    Console.WriteLine("Using 1 for 'start'. Error: " + e.Message);
-                    start = 1;
-                }
-                try
-                {
-                    if (args.Length >= 1)
-                    {
-                        int endArg = int.Parse(args[0]);
-                        if (endArg <= 0)
-                        {
-                            throw new FormatException("'start' must be greater than 0.");
-                        }
-                        if (endArg <= start)
-                        {
-                            throw new Exception("'end' must be greater than 'start'.");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Adding 100 to 'start' for 'end'. Error: " + e.Message);
-                    end = start + 100;
-                }
-                if (args.Length >= 2)
-                {
-                    multiples.Clear();
-                    for (var i = 2; i < args.Length; ++i)
-                    {
-                        try
-                        {
-                            string[] splitArg = args[i].Split('=');
-                            multiples.Add(int.Parse(splitArg[0]), splitArg[1]);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Argument '{0}' could not be parsed, skipping. Error: {1}", args[i], e.Message);
-                        }
-                    }
-                }
+                int temp = end;
+                end = start;
+                start = temp;
             }
+
+            //If no custom arguments are provided, sensible defaults for the multiples dictionary are 'Fizz' and 'Buzz'
+            if (multiples == null || multiples.Count == 0)
+            {
+                multiples = new Dictionary<int, string>
+                {
+                    { 3, "Fizz" },
+                    { 5, "Buzz" }
+                };
+            }
+
             for (int i = start; i <= end; ++i)
             {
-                string result = MultipleString(ref i, ref multiples);
+                string result = FizzBuzz.MultipleString(i, ref multiples);
                 Console.WriteLine(result);
             }
         }
 
-        static string MultipleString(ref int val, ref Dictionary<int, string> multiples)
+        public static string MultipleString(int val, ref Dictionary<int, string> multiples)
         {
             string resultStr = "";
             foreach (var multiple in multiples)
